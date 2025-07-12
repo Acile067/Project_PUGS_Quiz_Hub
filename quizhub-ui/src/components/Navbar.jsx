@@ -57,13 +57,21 @@ const Navbar = () => {
     const token = localStorage.getItem("access_token");
     if (!token) return;
 
-    fetch(`${API_URL}/user/profileimage`, {
+    fetch(`${API_URL}/users/profilepicture`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
         if (!res.ok) throw new Error("Image fetch failed");
-        const blob = await res.blob();
-        setProfileImage(URL.createObjectURL(blob));
+        return res.json();
+      })
+      .then((data) => {
+        if (data.success && data.profilePicture) {
+          // profilePicture je već Base64 string, samo napravi data URL
+          const imageSrc = `data:${data.profilePictureContentType};base64,${data.profilePicture}`;
+          setProfileImage(imageSrc);
+        } else {
+          setProfileImage(null);
+        }
       })
       .catch((err) => {
         console.error("Failed to load profile image:", err);
