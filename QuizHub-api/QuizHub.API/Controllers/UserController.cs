@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using QuizHub.Application.Feature.Token.Command;
 using QuizHub.Application.Feature.User.Commands.CreateUser;
 
 namespace QuizHub.API.Controllers
@@ -11,6 +12,13 @@ namespace QuizHub.API.Controllers
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> CreateUser([FromForm] CreateUserRequest command, CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(command, cancellationToken);
+            return Ok(result);
+        }
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] CreateTokenRequest command, CancellationToken cancellationToken)
         {
             var result = await Mediator.Send(command, cancellationToken);
             return Ok(result);

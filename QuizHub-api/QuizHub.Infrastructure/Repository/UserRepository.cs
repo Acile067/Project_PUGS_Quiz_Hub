@@ -29,6 +29,13 @@ namespace QuizHub.Infrastructure.Repository
             return await _context.Users.AnyAsync(u => u.Email == email, cancellationToken);
         }
 
+        public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
+        {           
+            return await _context.Users
+                .Where(u => u.Email == email)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
         public async Task<User?> GetByEmailOrUsernameAsync(string email, string username, CancellationToken cancellationToken)
         {            
             return await _context.Users
@@ -40,6 +47,14 @@ namespace QuizHub.Infrastructure.Repository
         {
             return await _context.Users
                 .Where(u => u.Id == userId)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken)
+        {
+            
+            return await _context.Users
+                .Where(u => u.Username == username)
                 .FirstOrDefaultAsync(cancellationToken);
         }
 

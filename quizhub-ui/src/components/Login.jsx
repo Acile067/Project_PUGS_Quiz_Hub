@@ -13,7 +13,7 @@ const Login = () => {
     setFieldErrors({});
 
     try {
-      const response = await fetch(`${API_URL}/user/login`, {
+      const response = await fetch(`${API_URL}/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,6 +37,7 @@ const Login = () => {
         if (data.errors && Array.isArray(data.errors)) {
           const errorsObj = {};
           for (const error of data.errors) {
+            // Ispravno mapiranje polja iz backend-a:
             errorsObj[error.name] = error.reason;
           }
           setFieldErrors(errorsObj);
@@ -44,7 +45,7 @@ const Login = () => {
           setFieldErrors({
             general:
               data.detail ||
-              data.Message ||
+              data.message ||
               data.ExceptionMessage ||
               "Login failed.",
           });
@@ -52,11 +53,11 @@ const Login = () => {
         return;
       }
 
-      if (data.Success) {
-        localStorage.setItem("access_token", data.Token);
+      if (data.success) {
+        localStorage.setItem("access_token", data.token);
         navigate("/");
       } else {
-        setFieldErrors({ general: data.Message || "Login failed." });
+        setFieldErrors({ general: data.message || "Login failed." });
       }
     } catch (error) {
       setFieldErrors({ general: "Unexpected error: " + error.message });

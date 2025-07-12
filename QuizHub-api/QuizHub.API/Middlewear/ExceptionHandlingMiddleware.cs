@@ -59,6 +59,15 @@ namespace QuizHub.API.Middlewear
                         problemDetails.Detail = notFoundEx.Message;
                         break;
 
+                    case UnauthorizedException unauthorizedEx:
+                        statusCode = StatusCodes.Status401Unauthorized;
+
+                        problemDetails.Status = statusCode;
+                        problemDetails.Type = "Unauthorized";
+                        problemDetails.Title = "Unauthorized access";
+                        problemDetails.Detail = unauthorizedEx.Message;
+                        break;
+
                     default:
 
                         problemDetails.Status = statusCode;
