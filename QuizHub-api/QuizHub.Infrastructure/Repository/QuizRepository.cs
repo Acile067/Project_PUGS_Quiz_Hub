@@ -35,6 +35,14 @@ namespace QuizHub.Infrastructure.Repository
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
+        public async Task<IEnumerable<Quiz>> GetAllQuizzesByCreatedByIdAsync(string createdById, CancellationToken cancellationToken)
+        {            
+            return await _context.Quizzes
+                .Where(q => q.CreatedByUserId == createdById)
+                .Include(q => q.Questions)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task<Quiz?> GetQuizByIdAsync(string quizId, CancellationToken cancellationToken)
         {          
             return await _context.Quizzes

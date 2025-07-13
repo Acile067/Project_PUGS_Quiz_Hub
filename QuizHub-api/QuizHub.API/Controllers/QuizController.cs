@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizHub.Application.Feature.Quiz.Commands.CreateQuiz;
+using QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzesByCreatedById;
 
 namespace QuizHub.API.Controllers
 {
@@ -25,6 +26,13 @@ namespace QuizHub.API.Controllers
             );
 
             var result = await Mediator.Send(command, cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet("get-all-quizzes-by-created-by-id-admin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllQuizzesByCreatedByIdAsync(CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(new GetAllQuizzesByCreatedByIdRequest() { CreatedById = IdentityService.Username}, cancellationToken);
             return Ok(result);
         }
     }
