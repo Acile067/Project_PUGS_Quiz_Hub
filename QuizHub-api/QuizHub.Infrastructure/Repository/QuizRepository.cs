@@ -42,6 +42,12 @@ namespace QuizHub.Infrastructure.Repository
                 .Include(q => q.Questions)
                 .ToListAsync(cancellationToken);
         }
+        public async Task<IEnumerable<Quiz>> GetAllQuizzesAsync(CancellationToken cancellationToken)
+        {            
+            return await _context.Quizzes
+                .Include(q => q.Questions)
+                .ToListAsync(cancellationToken);
+        }
 
         public async Task<Quiz?> GetQuizByIdAsync(string quizId, CancellationToken cancellationToken)
         {          

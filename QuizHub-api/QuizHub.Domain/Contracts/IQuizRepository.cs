@@ -14,5 +14,6 @@ namespace QuizHub.Domain.Contracts
         Task<bool> DeleteQuizAsync(string quizId, CancellationToken cancellationToken);
         Task<Quiz?> GetQuizByIdAsync(string quizId, CancellationToken cancellationToken);
         Task<IEnumerable<Quiz>> GetAllQuizzesByCreatedByIdAsync(string createdById, CancellationToken cancellationToken);
+        Task<IEnumerable<Quiz>> GetAllQuizzesAsync(CancellationToken cancellationToken);
     }
 }
