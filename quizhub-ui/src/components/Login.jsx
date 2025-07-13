@@ -1,25 +1,21 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../services/userService";
+import { createLoginRequest } from "../models/loginRequestModel";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFieldErrors({});
 
     try {
-      const response = await fetch(`${API_URL}/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const request = createLoginRequest(email, password);
+      const response = await loginUser(request);
 
       let data;
       try {
@@ -37,7 +33,6 @@ const Login = () => {
         if (data.errors && Array.isArray(data.errors)) {
           const errorsObj = {};
           for (const error of data.errors) {
-            // Ispravno mapiranje polja iz backend-a:
             errorsObj[error.name] = error.reason;
           }
           setFieldErrors(errorsObj);

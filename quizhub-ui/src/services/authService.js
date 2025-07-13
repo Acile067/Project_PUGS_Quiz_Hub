@@ -32,7 +32,35 @@ export const getUserIdFromToken = () => {
   if (!token) return null;
   try {
     const decoded = jwtDecode(token);
-    return decoded.id || null;
+    return decoded.UserId || null;
+  } catch {
+    return null;
+  }
+};
+
+export const getUserRoleFromToken = () => {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const decoded = jwtDecode(token);
+    return (
+      decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ||
+      null
+    );
+  } catch {
+    return null;
+  }
+};
+
+export const getUsernameFromToken = () => {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const decoded = jwtDecode(token);
+    return (
+      decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ||
+      null
+    );
   } catch {
     return null;
   }

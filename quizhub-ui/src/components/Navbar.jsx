@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { animateScroll } from "react-scroll";
-import { FaSearch } from "react-icons/fa";
 import { isAuthenticated, getUserIdFromToken } from "../services/authService";
+import { fetchUserProfilePicture } from "../services/userService";
+import { createProfilePictureResponse } from "../models/profilePictureResponseModel";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -13,7 +14,6 @@ const Navbar = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [userId, setUserId] = useState(null);
-  const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
   const handleHeroScroll = () => {
     if (location.pathname === "/") {
@@ -57,17 +57,11 @@ const Navbar = () => {
     const token = localStorage.getItem("access_token");
     if (!token) return;
 
-    fetch(`${API_URL}/users/profilepicture`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(async (res) => {
-        if (!res.ok) throw new Error("Image fetch failed");
-        return res.json();
-      })
+    fetchUserProfilePicture(token)
       .then((data) => {
-        if (data.success && data.profilePicture) {
-          // profilePicture je već Base64 string, samo napravi data URL
-          const imageSrc = `data:${data.profilePictureContentType};base64,${data.profilePicture}`;
+        const parsed = createProfilePictureResponse(data);
+        if (parsed.success && parsed.profilePicture) {
+          const imageSrc = `data:${parsed.profilePictureContentType};base64,${parsed.profilePicture}`;
           setProfileImage(imageSrc);
         } else {
           setProfileImage(null);
