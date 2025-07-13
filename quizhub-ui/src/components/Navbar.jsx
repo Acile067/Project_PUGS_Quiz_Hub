@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { animateScroll } from "react-scroll";
-import { isAuthenticated, getUserIdFromToken } from "../services/authService";
+import {
+  isAuthenticated,
+  getUserIdFromToken,
+  getUserRoleFromToken,
+} from "../services/authService";
 import { fetchUserProfilePicture } from "../services/userService";
 import { createProfilePictureResponse } from "../models/profilePictureResponseModel";
 
@@ -14,6 +18,7 @@ const Navbar = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [role, setRole] = useState(null);
 
   const handleHeroScroll = () => {
     if (location.pathname === "/") {
@@ -47,9 +52,12 @@ const Navbar = () => {
     setAuthenticated(isAuthenticated());
     if (isAuthenticated()) {
       const id = getUserIdFromToken();
+      const userRole = getUserRoleFromToken();
       setUserId(id);
+      setRole(userRole);
     } else {
       setUserId(null);
+      setRole(null);
     }
   }, []);
 
@@ -272,6 +280,27 @@ const Navbar = () => {
                     Help
                   </Link>
                 </li>
+                {authenticated && role === "Admin" && (
+                  <li>
+                    <Link
+                      to="/admin"
+                      className="block mt-1 py-2 px-3 text-red-600 font-bold rounded-lg hover:bg-red-50 md:hover:bg-transparent md:p-0 text-base text-center"
+                    >
+                      Admin
+                    </Link>
+                  </li>
+                )}
+
+                {authenticated && role === "User" && (
+                  <li>
+                    <Link
+                      to="/user"
+                      className="block mt-1 py-2 px-3 text-blue-600 font-bold rounded-lg hover:bg-blue-50 md:hover:bg-transparent md:p-0 text-base text-center"
+                    >
+                      User
+                    </Link>
+                  </li>
+                )}
               </>
             ) : (
               <></>

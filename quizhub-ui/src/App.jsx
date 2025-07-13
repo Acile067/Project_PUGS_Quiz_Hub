@@ -11,11 +11,15 @@ import Spinner from "./components/Spinner";
 import GuestRoute from "./components/GuestRoute";
 import { checkAndCleanToken } from "./services/authService";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
+import UserRoute from "./components/UserRoute";
 
 const HomePage = React.lazy(() => import("./pages/HomePage"));
 const RegisterPage = React.lazy(() => import("./pages/RegisterPage"));
 const LoginPage = React.lazy(() => import("./pages/LoginPage"));
 const ProfilePage = React.lazy(() => import("./pages/ProfilePage"));
+const AdminPage = React.lazy(() => import("./pages/AdminPage"));
+const UserDashboardPage = React.lazy(() => import("./pages/UserDashboardPage"));
 
 const createAppRoutes = () => (
   <>
@@ -29,6 +33,22 @@ const createAppRoutes = () => (
           <PrivateRoute>
             <ProfilePage />
           </PrivateRoute>
+        }
+      />
+      <Route
+        path="admin"
+        element={
+          <AdminRoute>
+            <AdminPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="user"
+        element={
+          <UserRoute>
+            <UserDashboardPage />
+          </UserRoute>
         }
       />
     </Route>
