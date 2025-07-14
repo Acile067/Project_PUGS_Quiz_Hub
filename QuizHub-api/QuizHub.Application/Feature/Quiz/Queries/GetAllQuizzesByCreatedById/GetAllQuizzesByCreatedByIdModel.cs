@@ -17,6 +17,7 @@ namespace QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzesByCreatedById
         public string Id { get; set; } = String.Empty;
         public string Title { get; set; } = String.Empty;
         public string? Description { get; set; }
+        public string Category { get; set; } = String.Empty;
         public int TimeLimitSeconds { get; set; }
         public int Difficulty { get; set; }
         public string CreatedByUserId { get; set; } = String.Empty;

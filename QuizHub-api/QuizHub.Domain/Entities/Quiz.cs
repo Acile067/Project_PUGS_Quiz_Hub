@@ -10,6 +10,7 @@ namespace QuizHub.Domain.Entities
     {
         public string Id { get; set; } = String.Empty;
         public string Title { get; set; } = String.Empty;
+        public string Category { get; set; } = String.Empty;
         public string? Description { get; set; }
         public int TimeLimitSeconds { get; set; }
         public int Difficulty { get; set; }

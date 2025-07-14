@@ -23,6 +23,7 @@ namespace QuizHub.Application.Feature.Quiz.Commands.CreateQuiz
                 Id = Guid.NewGuid().ToString(),
                 Title = request.Title,
                 Description = request.Description,
+                Category = request.Category,
                 TimeLimitSeconds = request.TimeLimitSeconds,
                 Difficulty = request.Difficulty,
                 CreatedByUserId = request.UserId

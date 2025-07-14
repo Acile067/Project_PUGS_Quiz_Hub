@@ -33,6 +33,7 @@ namespace QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzesByCreatedById
                 Description = q.Description,
                 TimeLimitSeconds = q.TimeLimitSeconds,
                 Difficulty = q.Difficulty,
+                Category = q.Category,
                 CreatedByUserId = q.CreatedByUserId,
                 QuestionCount = q.Questions?.Count ?? 0
             });

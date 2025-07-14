@@ -28,6 +28,7 @@ namespace QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzes
                 Id = q.Id,
                 Title = q.Title,
                 Description = q.Description,
+                Category = q.Category,
                 TimeLimitSeconds = q.TimeLimitSeconds,
                 Difficulty = q.Difficulty,
                 CreatedByUserId = q.CreatedByUserId,

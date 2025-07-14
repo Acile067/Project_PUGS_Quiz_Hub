@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizHub.Application.Feature.Quiz.Commands.CreateQuiz;
+using QuizHub.Application.Feature.Quiz.Commands.DeleteQuiz;
 using QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzes;
 using QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzesByCreatedById;
 
@@ -22,6 +23,7 @@ namespace QuizHub.API.Controllers
                 userId,
                 dto.Title,
                 dto.Description,
+                dto.Category,
                 dto.TimeLimitSeconds,
                 dto.Difficulty
             );
@@ -40,6 +42,14 @@ namespace QuizHub.API.Controllers
         public async Task<IActionResult> GetAllQuizzesAsync(CancellationToken cancellationToken)
         {
             var result = await Mediator.Send(new GetAllQuizzesQueryRequest(), cancellationToken);
+            return Ok(result);
+        }
+        [HttpDelete("delete/{quizId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteQuizAsync(string quizId, CancellationToken cancellationToken)
+        {
+            var command = new DeleteQuizCommandRequest(quizId, IdentityService.Username);
+            var result = await Mediator.Send(command, cancellationToken);
             return Ok(result);
         }
     }

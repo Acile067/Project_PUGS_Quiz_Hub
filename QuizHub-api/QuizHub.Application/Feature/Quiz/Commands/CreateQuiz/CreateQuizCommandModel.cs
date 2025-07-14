@@ -9,11 +9,12 @@ namespace QuizHub.Application.Feature.Quiz.Commands.CreateQuiz
 {
     public class CreateQuizCommandRequest : IRequest<CreateQuizCommandResponse>
     {
-        public CreateQuizCommandRequest(string userId, string title, string? description, int timeLimitSeconds, int difficulty)
+        public CreateQuizCommandRequest(string userId, string title,string category, string? description, int timeLimitSeconds, int difficulty)
         {
             UserId = userId;
             Title = title;
             Description = description;
+            Category = category;
             TimeLimitSeconds = timeLimitSeconds;
             Difficulty = difficulty;
         }
@@ -21,6 +22,7 @@ namespace QuizHub.Application.Feature.Quiz.Commands.CreateQuiz
         public string UserId { get; set; }
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
+        public string Category { get; set; } = string.Empty;
         public int TimeLimitSeconds { get; set; }
         public int Difficulty { get; set; }
     }
@@ -28,6 +30,7 @@ namespace QuizHub.Application.Feature.Quiz.Commands.CreateQuiz
     {
         public string Title { get; set; } = string.Empty;
         public string? Description { get; set; }
+        public string Category { get; set; } = string.Empty;
         public int TimeLimitSeconds { get; set; }
         public int Difficulty { get; set; }
     }
