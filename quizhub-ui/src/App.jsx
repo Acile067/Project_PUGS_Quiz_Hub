@@ -18,7 +18,6 @@ const HomePage = React.lazy(() => import("./pages/HomePage"));
 const RegisterPage = React.lazy(() => import("./pages/RegisterPage"));
 const LoginPage = React.lazy(() => import("./pages/LoginPage"));
 const ProfilePage = React.lazy(() => import("./pages/ProfilePage"));
-const AdminPage = React.lazy(() => import("./pages/AdminPage"));
 const UserDashboardPage = React.lazy(() => import("./pages/UserDashboardPage"));
 const AdminQuizPage = React.lazy(() => import("./pages/AdminQuizPage"));
 const AddQuestionPage = React.lazy(() => import("./pages/AddQuestionPage"));
@@ -68,14 +67,6 @@ const createAppRoutes = () => (
         element={
           <AdminRoute>
             <AdminQuizPage />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="admin"
-        element={
-          <AdminRoute>
-            <AdminPage />
           </AdminRoute>
         }
       />

@@ -9,7 +9,9 @@ namespace QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzes
 {
     public class GetAllQuizzesQueryRequest : IRequest<IEnumerable<GetAllQuizzesQueryResponse>>
     {
-
+        public string? Keyword { get; set; }
+        public string? Category { get; set; }
+        public int? Difficulty { get; set; }
     }
 
     public class GetAllQuizzesQueryResponse

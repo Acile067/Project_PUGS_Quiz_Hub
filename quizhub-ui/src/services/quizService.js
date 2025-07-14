@@ -13,6 +13,30 @@ export const createQuiz = async (quizRequest) => {
   });
 };
 
+export const getAllQuizzes = async (filters = {}) => {
+  const token = localStorage.getItem("access_token");
+  const params = new URLSearchParams();
+
+  if (filters.keyword) params.append("keyword", filters.keyword);
+  if (filters.category) params.append("category", filters.category);
+  if (filters.difficulty) params.append("difficulty", filters.difficulty);
+
+  return await fetch(`${API_URL}/quiz/get-all?${params.toString()}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getAllCategories = async () => {
+  const token = localStorage.getItem("access_token");
+  return await fetch(`${API_URL}/quiz/get-all-categories`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const getAdminQuizzes = async () => {
   const token = localStorage.getItem("access_token");
 

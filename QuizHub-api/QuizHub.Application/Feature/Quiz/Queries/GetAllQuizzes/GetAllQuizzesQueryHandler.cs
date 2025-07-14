@@ -17,13 +17,13 @@ namespace QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzes
         }
         public async Task<IEnumerable<GetAllQuizzesQueryResponse>> Handle(GetAllQuizzesQueryRequest request, CancellationToken cancellationToken)
         {
-            
-            var quizzes = await _quizRepository.GetAllQuizzesAsync(cancellationToken);
+
+            var quizzes = await _quizRepository.GetAllQuizzesFilteredAsync(request.Keyword, request.Category, request.Difficulty, cancellationToken);
+
             if (quizzes == null || !quizzes.Any())
-            {
                 return Enumerable.Empty<GetAllQuizzesQueryResponse>();
-            }
-            var result = quizzes.Select(q => new GetAllQuizzesQueryResponse
+
+            return quizzes.Select(q => new GetAllQuizzesQueryResponse
             {
                 Id = q.Id,
                 Title = q.Title,
@@ -34,7 +34,6 @@ namespace QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzes
                 CreatedByUserId = q.CreatedByUserId,
                 QuestionCount = q.Questions?.Count ?? 0
             });
-            return result;
         }
     }
 }

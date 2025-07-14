@@ -61,5 +61,38 @@ namespace QuizHub.Infrastructure.Repository
             _context.Quizzes.Update(quiz);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
+
+        public async Task<List<string>> GetAllCategoriesAsync(CancellationToken cancellationToken)
+        {            
+            return await _context.Quizzes
+                .Select(q => q.Category)
+                .Distinct()
+                .ToListAsync(cancellationToken);
+        }
+        public async Task<IEnumerable<Quiz>> GetAllQuizzesFilteredAsync(string? keyword, string? category, int? difficulty, CancellationToken cancellationToken)
+        {
+            var query = _context.Quizzes.Include(q => q.Questions).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                var lowerKeyword = keyword.ToLower();
+                query = query.Where(q =>
+                    q.Title.ToLower().Contains(lowerKeyword) ||
+                    (q.Description != null && q.Description.ToLower().Contains(lowerKeyword))
+                );
+            }
+
+            if (!string.IsNullOrWhiteSpace(category))
+            {
+                query = query.Where(q => q.Category == category);
+            }
+
+            if (difficulty.HasValue)
+            {
+                query = query.Where(q => q.Difficulty == difficulty.Value);
+            }
+
+            return await query.ToListAsync(cancellationToken);
+        }
     }
 }

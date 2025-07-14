@@ -284,14 +284,6 @@ const Navbar = () => {
                   <>
                     <li>
                       <Link
-                        to="/admin"
-                        className="block mt-1 py-2 px-3 text-red-600 font-bold rounded-lg hover:bg-red-50 md:hover:bg-transparent md:p-0 text-base text-center"
-                      >
-                        Admin
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
                         to="/quiz/admin"
                         className="block mt-1 py-2 px-3 text-red-600 font-bold rounded-lg hover:bg-red-50 md:hover:bg-transparent md:p-0 text-base text-center"
                       >

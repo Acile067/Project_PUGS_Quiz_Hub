@@ -8,6 +8,7 @@ using QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzes;
 using QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzesByCreatedById;
 using QuizHub.Application.Feature.Quiz.Queries.GetQuizWithQuestionsAndAnswersById;
 using QuizHub.Application.Feature.Quiz.Queries.GetQuizWithQuestionsById;
+using QuizHub.Application.Feature.Quiz.Queries.GetQuizzesCategory;
 
 namespace QuizHub.API.Controllers
 {
@@ -42,11 +43,29 @@ namespace QuizHub.API.Controllers
             return Ok(result);
         }
         [HttpGet("get-all")]
-        public async Task<IActionResult> GetAllQuizzesAsync(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllQuizzesAsync(
+            [FromQuery] string? keyword,
+            [FromQuery] string? category,
+            [FromQuery] int? difficulty, 
+            CancellationToken cancellationToken)
         {
-            var result = await Mediator.Send(new GetAllQuizzesQueryRequest(), cancellationToken);
+            var query = new GetAllQuizzesQueryRequest
+            {
+                Keyword = keyword,
+                Category = category,
+                Difficulty = difficulty
+            };
+
+            var result = await Mediator.Send(query, cancellationToken);
             return Ok(result);
         }
+        [HttpGet("get-all-categories")]
+        public async Task<IActionResult> GetAllCategoriesAsync(CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(new GetQuizzesCategoryQueryRequest(), cancellationToken);
+            return Ok(result);
+        }
+
         [HttpDelete("delete/{quizId}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteQuizAsync(string quizId, CancellationToken cancellationToken)
