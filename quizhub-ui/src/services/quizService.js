@@ -33,3 +33,48 @@ export const deleteQuiz = async (quizId) => {
     },
   });
 };
+
+export const getQuizByIdWithAnswers = async (quizId) => {
+  const token = localStorage.getItem("access_token");
+  const response = await fetch(
+    `${API_URL}/quiz/get-by-id-questions/answers/${quizId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    data = { detail: await response.text() };
+  }
+
+  return { ok: response.ok, data };
+};
+
+export const updateQuiz = async (quizId, requestBody) => {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(`${API_URL}/quiz/update/${quizId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(requestBody),
+  });
+
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    data = { detail: await response.text() };
+  }
+
+  return { ok: response.ok, data };
+};

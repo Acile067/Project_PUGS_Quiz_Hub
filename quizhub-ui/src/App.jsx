@@ -22,6 +22,8 @@ const AdminPage = React.lazy(() => import("./pages/AdminPage"));
 const UserDashboardPage = React.lazy(() => import("./pages/UserDashboardPage"));
 const AdminQuizPage = React.lazy(() => import("./pages/AdminQuizPage"));
 const AddQuestionPage = React.lazy(() => import("./pages/AddQuestionPage"));
+const EditQuizPage = React.lazy(() => import("./pages/EditQuizPage"));
+const EditQuizForm = React.lazy(() => import("./components/EditQuizForm"));
 
 const createAppRoutes = () => (
   <>
@@ -42,6 +44,22 @@ const createAppRoutes = () => (
         element={
           <AdminRoute>
             <AddQuestionPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="quiz/edit/:quizId"
+        element={
+          <AdminRoute>
+            <EditQuizPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="quiz/edit-form/:quizId"
+        element={
+          <AdminRoute>
+            <EditQuizForm />
           </AdminRoute>
         }
       />
