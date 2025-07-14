@@ -21,6 +21,7 @@ const ProfilePage = React.lazy(() => import("./pages/ProfilePage"));
 const AdminPage = React.lazy(() => import("./pages/AdminPage"));
 const UserDashboardPage = React.lazy(() => import("./pages/UserDashboardPage"));
 const AdminQuizPage = React.lazy(() => import("./pages/AdminQuizPage"));
+const AddQuestionPage = React.lazy(() => import("./pages/AddQuestionPage"));
 
 const createAppRoutes = () => (
   <>
@@ -34,6 +35,14 @@ const createAppRoutes = () => (
           <PrivateRoute>
             <ProfilePage />
           </PrivateRoute>
+        }
+      />
+      <Route
+        path="quiz/add-question/:quizId"
+        element={
+          <AdminRoute>
+            <AddQuestionPage />
+          </AdminRoute>
         }
       />
       <Route
