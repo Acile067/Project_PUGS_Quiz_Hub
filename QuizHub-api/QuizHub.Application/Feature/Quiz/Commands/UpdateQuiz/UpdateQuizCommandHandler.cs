@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using QuizHub.Application.Common.Exceptions;
 using QuizHub.Domain.Contracts;
 using QuizHub.Domain.Entities;
 using System;
@@ -21,7 +22,10 @@ namespace QuizHub.Application.Feature.Quiz.Commands.UpdateQuiz
 
             var existingQuiz = await _quizRepository.GetQuizByIdAsync(request.Id, cancellationToken);
             if (existingQuiz == null)
-                throw new Exception("Quiz not found.");
+                throw new NotFoundException("quiz", request.Id);
+
+            if (existingQuiz.CreatedByUserId != request.CreatedByUserId)
+                throw new UnauthorizedAccessException("You do not have permission to update this quiz.");
 
             existingQuiz.Title = request.Title;
             existingQuiz.Description = request.Description;
