@@ -5,6 +5,7 @@ using QuizHub.Application.Feature.Quiz.Commands.CreateQuiz;
 using QuizHub.Application.Feature.Quiz.Commands.DeleteQuiz;
 using QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzes;
 using QuizHub.Application.Feature.Quiz.Queries.GetAllQuizzesByCreatedById;
+using QuizHub.Application.Feature.Quiz.Queries.GetQuizWithQuestionsById;
 
 namespace QuizHub.API.Controllers
 {
@@ -50,6 +51,12 @@ namespace QuizHub.API.Controllers
         {
             var command = new DeleteQuizCommandRequest(quizId, IdentityService.Username);
             var result = await Mediator.Send(command, cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet("get-by-id-questions/{quizId}")]
+        public async Task<IActionResult> GetQuizByQuestionsIdAsync(string quizId, CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(new GetQuizWithQuestionsByIdQueryRequest(quizId) , cancellationToken);
             return Ok(result);
         }
     }
