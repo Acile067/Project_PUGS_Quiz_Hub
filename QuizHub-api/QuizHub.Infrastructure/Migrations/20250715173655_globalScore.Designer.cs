@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizHub.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using QuizHub.Infrastructure.Data;
 namespace QuizHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715173655_globalScore")]
+    partial class globalScore
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,7 +104,7 @@ namespace QuizHub.Infrastructure.Migrations
 
                     b.Property<string>("QuizId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Score")
                         .HasColumnType("float");
@@ -117,8 +120,6 @@ namespace QuizHub.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("QuizId");
 
                     b.ToTable("QuizResults");
                 });
@@ -269,17 +270,6 @@ namespace QuizHub.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("QuizHub.Domain.Entities.QuizResult", b =>
-                {
-                    b.HasOne("QuizHub.Domain.Entities.Quiz", "Quiz")
-                        .WithMany("Results")
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quiz");
-                });
-
             modelBuilder.Entity("QuizHub.Domain.Entities.UserAnswer", b =>
                 {
                     b.HasOne("QuizHub.Domain.Entities.QuizResult", null)
@@ -292,8 +282,6 @@ namespace QuizHub.Infrastructure.Migrations
             modelBuilder.Entity("QuizHub.Domain.Entities.Quiz", b =>
                 {
                     b.Navigation("Questions");
-
-                    b.Navigation("Results");
                 });
 
             modelBuilder.Entity("QuizHub.Domain.Entities.QuizResult", b =>

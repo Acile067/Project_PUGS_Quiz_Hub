@@ -36,3 +36,22 @@ export const fetchUserProfilePicture = async (token) => {
 
   return data;
 };
+
+export const getUserResults = async (userId) => {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_API_URL}/users/result/${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user results");
+  }
+
+  return await response.json();
+};

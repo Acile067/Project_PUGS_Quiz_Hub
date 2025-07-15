@@ -5,6 +5,7 @@ using QuizHub.API.Service;
 using QuizHub.Application.Feature.Token.Command;
 using QuizHub.Application.Feature.User.Commands.CreateUser;
 using QuizHub.Application.Feature.User.Quieries.GetUserProfilePicture;
+using QuizHub.Application.Feature.User.Quieries.GetUserResults;
 
 namespace QuizHub.API.Controllers
 {
@@ -15,7 +16,7 @@ namespace QuizHub.API.Controllers
     {
         [HttpPost]
         [Route("create")]
-        [AllowAnonymous] 
+        [AllowAnonymous]
         public async Task<IActionResult> CreateUser([FromForm] CreateUserRequest command, CancellationToken cancellationToken)
         {
             var result = await Mediator.Send(command, cancellationToken);
@@ -36,6 +37,12 @@ namespace QuizHub.API.Controllers
             var result = await Mediator.Send(new GetUserProfilePictureRequest() { Username = IdentityService.Username }, cancellationToken);
             return Ok(result);
         }
-
+        [HttpGet]
+        [Route("result/{userId}")]
+        public async Task<IActionResult> GetUserResult(string userId, CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(new GetUserResultsQueryRequest(IdentityService.Username), cancellationToken);
+            return Ok(result);
+        }
     }
 }

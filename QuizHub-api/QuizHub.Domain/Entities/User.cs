@@ -16,6 +16,7 @@ namespace QuizHub.Domain.Entities
         public string PasswordSalt { get; set; } = String.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
+        public int GlobalScore { get; set; } = 0;
         public bool isAdmin { get; set; } = false;
         public byte []? ProfilePicture { get; set; }
         public string? ProfilePictureContentType { get; set; }

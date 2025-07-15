@@ -71,6 +71,12 @@ namespace QuizHub.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
+        public async Task<bool> UpdateAsync(User user, CancellationToken cancellationToken)
+        {      
+            _context.Users.Update(user);
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
         public async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken)
         {
             return await _context.Users.AnyAsync(u => u.Username == username, cancellationToken);

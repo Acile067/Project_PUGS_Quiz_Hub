@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizHub.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using QuizHub.Infrastructure.Data;
 namespace QuizHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715181708_quizfieald")]
+    partial class quizfieald
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,9 +275,9 @@ namespace QuizHub.Infrastructure.Migrations
             modelBuilder.Entity("QuizHub.Domain.Entities.QuizResult", b =>
                 {
                     b.HasOne("QuizHub.Domain.Entities.Quiz", "Quiz")
-                        .WithMany("Results")
+                        .WithMany()
                         .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Quiz");
@@ -292,8 +295,6 @@ namespace QuizHub.Infrastructure.Migrations
             modelBuilder.Entity("QuizHub.Domain.Entities.Quiz", b =>
                 {
                     b.Navigation("Questions");
-
-                    b.Navigation("Results");
                 });
 
             modelBuilder.Entity("QuizHub.Domain.Entities.QuizResult", b =>

@@ -1,4 +1,5 @@
-﻿using QuizHub.Domain.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using QuizHub.Domain.Contracts;
 using QuizHub.Domain.Entities;
 using QuizHub.Infrastructure.Data;
 using System;
@@ -20,6 +21,14 @@ namespace QuizHub.Infrastructure.Repository
         {
             await _context.QuizResults.AddAsync(quizResult, cancellationToken);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<List<QuizResult>> GetResultsByUserIdAsync(string userId, CancellationToken cancellationToken)
+        {
+            return await _context.QuizResults
+                .Where(r => r.UserId == userId)
+                .Include(r => r.Quiz)
+                .ToListAsync(cancellationToken);
         }
     }
 }

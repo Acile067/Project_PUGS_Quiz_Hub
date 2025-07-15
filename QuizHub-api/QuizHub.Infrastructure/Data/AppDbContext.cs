@@ -78,6 +78,18 @@ namespace QuizHub.Infrastructure.Data
                 .Property(q => q.CorrectOptionIndices)
                 .HasConversion(intListConverter)
                 .Metadata.SetValueComparer(intListComparer);
+
+            modelBuilder.Entity<QuizResult>()
+                .HasOne(qr => qr.Quiz)
+                .WithMany()
+                .HasForeignKey(qr => qr.QuizId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Quiz>()
+                .HasMany(q => q.Results)
+                .WithOne(qr => qr.Quiz)
+                .HasForeignKey(qr => qr.QuizId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

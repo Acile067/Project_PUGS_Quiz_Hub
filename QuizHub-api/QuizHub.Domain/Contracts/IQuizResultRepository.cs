@@ -10,5 +10,6 @@ namespace QuizHub.Domain.Contracts
     public interface IQuizResultRepository
     {
         Task<bool> AddAsync(QuizResult quizResult, CancellationToken cancellationToken);
+        Task<List<QuizResult>> GetResultsByUserIdAsync(string userId, CancellationToken cancellationToken);
     }
 }

@@ -16,5 +16,6 @@ namespace QuizHub.Domain.Entities
         public int Difficulty { get; set; }
         public string CreatedByUserId { get; set; } = String.Empty;
         public List<Question> Questions { get; set; } = new();
+        public List<QuizResult> Results { get; set; } = new();
     }
 }

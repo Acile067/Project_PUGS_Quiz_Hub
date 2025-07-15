@@ -16,15 +16,18 @@ namespace QuizHub.Application.Feature.QuizResult.Commands
         private readonly IQuizRepository _quizRepository;
         private readonly IQuizResultRepository _quizResultRepository;
         private readonly IQuestionRepository _questionRepository;
+        private readonly IUserRepository _userRepository;
 
         public CreateQuizResultCommandHandler(
             IQuizRepository quizRepository,
             IQuizResultRepository quizResultRepository,
-            IQuestionRepository questionRepository)
+            IQuestionRepository questionRepository,
+            IUserRepository userRepository)
         {
             _quizRepository = quizRepository ?? throw new ArgumentNullException(nameof(quizRepository));
             _quizResultRepository = quizResultRepository ?? throw new ArgumentNullException(nameof(quizResultRepository));
             _questionRepository = questionRepository ?? throw new ArgumentNullException(nameof(questionRepository));
+            _userRepository = userRepository;
         }
         public async Task<CreateQuizResultCommandResponse> Handle(CreateQuizResultCommandRequest request, CancellationToken cancellationToken)
         {
@@ -33,6 +36,12 @@ namespace QuizHub.Application.Feature.QuizResult.Commands
             if (questions == null || !questions.Any())
             {
                 throw new NotFoundException("Quiz", request.QuizId);
+            }
+ 
+            var user = await _userRepository.GetByUsernameAsync(request.UserId, cancellationToken);
+            if (user == null)
+            {
+                throw new NotFoundException("User", request.UserId);
             }
 
             var questionDict = questions.ToDictionary(q => q.Id, q => q);
@@ -80,11 +89,29 @@ namespace QuizHub.Application.Feature.QuizResult.Commands
                 TotalQuestions = questions.Count(),
                 CorrectAnswers = correctCount,
                 Score = Math.Round((double)correctCount / questions.Count() * 100, 2),
+                TimeElapsedSeconds = request.TimeElapsedSeconds,
                 CompletedAt = DateTime.UtcNow,
                 Answers = userAnswers
             };
 
-            var saved = await _quizResultRepository.AddAsync(result, cancellationToken);
+            user.GlobalScore += correctCount;
+            user.LastUpdatedAt = DateTime.UtcNow;
+
+
+            var ret1 = await _userRepository.UpdateAsync(user, cancellationToken);
+
+            if (!ret1)
+            {
+                throw new Exception("Failed to update user score. Please try again later!");
+            }
+            var ret2 = await _quizResultRepository.AddAsync(result, cancellationToken);
+
+            if (!ret2)
+            {
+                throw new Exception("Failed to save quiz result. Please try again later!");
+            }
+
+            var saved = ret1 && ret2;
 
             return new CreateQuizResultCommandResponse
             {
