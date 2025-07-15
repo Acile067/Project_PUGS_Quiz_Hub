@@ -38,5 +38,17 @@ namespace QuizHub.Application.Feature.QuizResult.Commands
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; } = string.Empty;
+        public int TotalQuestions { get; set; }
+        public int CorrectAnswers { get; set; }
+        public double Score { get; set; }
+
+        public List<UserAnswerDto> Answers { get; set; } = new();
+    }
+    public class UserAnswerDto
+    {
+        public string QuestionId { get; set; } = string.Empty;
+        public object? Answer { get; set; }
+        public object? CorrectAnswer { get; set; }
+        public bool IsCorrect { get; set; }
     }
 }

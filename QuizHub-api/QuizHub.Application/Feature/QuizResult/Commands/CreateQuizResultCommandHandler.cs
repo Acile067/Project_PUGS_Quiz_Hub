@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using QuizHub.Application.Common.Exceptions;
 using QuizHub.Domain.Contracts;
 using QuizHub.Domain.Entities;
 using System;
@@ -28,19 +29,25 @@ namespace QuizHub.Application.Feature.QuizResult.Commands
         public async Task<CreateQuizResultCommandResponse> Handle(CreateQuizResultCommandRequest request, CancellationToken cancellationToken)
         {
             var questions = await _questionRepository.GetQuestionsByQuizIdAsync(request.QuizId, cancellationToken);
+
+            if (questions == null || !questions.Any())
+            {
+                throw new NotFoundException("Quiz", request.QuizId);
+            }
+
             var questionDict = questions.ToDictionary(q => q.Id, q => q);
 
             int correctCount = 0;
             var userAnswers = new List<Domain.Entities.UserAnswer>();
 
-            foreach (var answerDto in request.Answers)
+            var answerDict = request.Answers.ToDictionary(a => a.QuestionId, a => a.Answer);
+
+            foreach (var question in questions)
             {
-                if (!questionDict.TryGetValue(answerDto.QuestionId, out var question))
-                    continue;
-
                 object? parsedAnswer = null;
+                var hasAnswer = answerDict.TryGetValue(question.Id, out var rawAnswer);
 
-                if (answerDto.Answer is JsonElement je)
+                if (hasAnswer && rawAnswer is JsonElement je)
                 {
                     parsedAnswer = question switch
                     {
@@ -52,14 +59,14 @@ namespace QuizHub.Application.Feature.QuizResult.Commands
                     };
                 }
 
-                var isCorrect = question.IsCorrect(parsedAnswer!);
+                bool isCorrect = hasAnswer && parsedAnswer != null && question.IsCorrect(parsedAnswer);
 
                 if (isCorrect) correctCount++;
 
                 userAnswers.Add(new Domain.Entities.UserAnswer
                 {
                     Id = Guid.NewGuid().ToString(),
-                    QuestionId = answerDto.QuestionId,
+                    QuestionId = question.Id,
                     IsCorrect = isCorrect,
                     Answer = parsedAnswer
                 });
@@ -82,7 +89,28 @@ namespace QuizHub.Application.Feature.QuizResult.Commands
             return new CreateQuizResultCommandResponse
             {
                 IsSuccess = saved,
-                Message = saved ? "Quiz result saved successfully." : "Failed to save result."
+                Message = saved ? "Quiz result saved successfully." : "Failed to save result.",
+                TotalQuestions = questions.Count(),
+                CorrectAnswers = correctCount,
+                Score = Math.Round((double)correctCount / questions.Count() * 100, 2),
+                Answers = userAnswers.Select(a =>
+                {
+                    var question = questionDict[a.QuestionId];
+                    return new UserAnswerDto
+                    {
+                        QuestionId = a.QuestionId,
+                        Answer = a.Answer,
+                        CorrectAnswer = question switch
+                        {
+                            SingleChoiceQuestion scq => scq.CorrectOptionIndex,
+                            MultipleChoiceQuestion mcq => mcq.CorrectOptionIndices.Select(i => i).ToList(),
+                            TrueFalseQuestion tfq => tfq.CorrectAnswer,
+                            FillInTheBlankQuestion fibq => fibq.CorrectAnswer,
+                            _ => null
+                        },
+                        IsCorrect = a.IsCorrect
+                    };
+                }).ToList()
             };
         }
     }
