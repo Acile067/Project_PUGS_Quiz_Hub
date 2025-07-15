@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizHub.Application.Feature.QuizResult.Commands;
+using QuizHub.Application.Feature.QuizResult.Queries.GetResultWithAllAttempts;
 
 namespace QuizHub.API.Controllers
 {
@@ -21,6 +22,16 @@ namespace QuizHub.API.Controllers
                 dto.TimeElapsedSeconds
             );
             var result = await Mediator.Send(command, cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet("details/{resultId}")]
+        public async Task<IActionResult> GetResultDetaile(string resultId, CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(new GetResultWithAllAttemptsQueryRequest
+            {
+                ResultId = resultId
+            },cancellationToken);
+
             return Ok(result);
         }
     }

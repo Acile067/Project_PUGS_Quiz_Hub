@@ -49,7 +49,7 @@ export const UserProfile = ({ userId }) => {
                 </td>
                 <td className="p-2">
                   <button
-                    onClick={() => navigate(`/result/${res.id}`)}
+                    onClick={() => navigate(`/result/details/${res.resultId}`)}
                     className="text-blue-600 hover:underline"
                   >
                     See More

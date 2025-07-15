@@ -11,5 +11,8 @@ namespace QuizHub.Domain.Contracts
     {
         Task<bool> AddAsync(QuizResult quizResult, CancellationToken cancellationToken);
         Task<List<QuizResult>> GetResultsByUserIdAsync(string userId, CancellationToken cancellationToken);
+        Task<QuizResult?> GetResultWithQuizAndAnswersAsync(string resultId, CancellationToken cancellationToken);
+        Task<List<QuizResult>> GetAllAttemptsByUserAndQuizAsync(string userId, string quizId, CancellationToken cancellationToken);
+
     }
 }
