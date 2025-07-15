@@ -23,6 +23,7 @@ const AdminQuizPage = React.lazy(() => import("./pages/AdminQuizPage"));
 const AddQuestionPage = React.lazy(() => import("./pages/AddQuestionPage"));
 const EditQuizPage = React.lazy(() => import("./pages/EditQuizPage"));
 const EditQuizForm = React.lazy(() => import("./components/EditQuizForm"));
+const StartQuizPage = React.lazy(() => import("./pages/StartQuizPage"));
 
 const createAppRoutes = () => (
   <>
@@ -35,6 +36,14 @@ const createAppRoutes = () => (
         element={
           <PrivateRoute>
             <ProfilePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="quiz/start/:id"
+        element={
+          <PrivateRoute>
+            <StartQuizPage />
           </PrivateRoute>
         }
       />

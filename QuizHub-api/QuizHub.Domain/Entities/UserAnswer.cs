@@ -41,8 +41,6 @@ namespace QuizHub.Domain.Entities
                 AnswerJson = JsonSerializer.Serialize(value);
             }
         }
-
-        // Ako želiš tipizovane pomoćne metode:
         public T? GetAnswerAs<T>()
         {
             try

@@ -24,6 +24,8 @@ namespace QuizHub.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IQuizRepository, QuizRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<IQuizResultRepository, QuizResultRepository>();
+            services.AddScoped<IUserAnswerRepository, UserAnswerRepository>();
 
             return services;
         }

@@ -102,3 +102,47 @@ export const updateQuiz = async (quizId, requestBody) => {
 
   return { ok: response.ok, data };
 };
+
+export const getQuizByIdWithQuestions = async (id) => {
+  const token = localStorage.getItem("access_token");
+  return await fetch(`${API_URL}/quiz/get-by-id-questions/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const submitQuizResult = async (
+  quizId,
+  userId,
+  timeElapsedSeconds,
+  userAnswers
+) => {
+  const token = localStorage.getItem("access_token");
+
+  const payload = {
+    quizId,
+    userId,
+    timeElapsedSeconds,
+    answers: Object.entries(userAnswers).map(([questionId, answer]) => ({
+      questionId,
+      answer,
+    })),
+  };
+
+  const response = await fetch(`${API_URL}/quiz-result/create`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.message || "Failed to submit quiz result.");
+  }
+
+  return await response.json();
+};
