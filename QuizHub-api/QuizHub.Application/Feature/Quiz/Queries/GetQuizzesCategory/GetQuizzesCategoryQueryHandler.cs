@@ -34,6 +34,8 @@ namespace QuizHub.Application.Feature.Quiz.Queries.GetQuizzesCategory
                 Message = "Categories retrieved successfully.",
                 Success = true
             };
+
+            throw new Exception("Failed to get quizzes. Please try again later.");
         }
     }
 }

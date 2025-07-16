@@ -34,7 +34,7 @@ namespace QuizHub.Application.Feature.User.Commands.CreateUser
                 }
             }
 
-            await _userRepository.AddAsync(new Domain.Entities.User
+            var ret = await _userRepository.AddAsync(new Domain.Entities.User
             {
                 Id = Guid.NewGuid().ToString(),
                 Username = request.Username,
@@ -46,11 +46,16 @@ namespace QuizHub.Application.Feature.User.Commands.CreateUser
                 ProfilePictureContentType = request.ProfilePicture?.ContentType
             }, cancellationToken);
 
-            return new CreateUserResponse
+            if(ret)
             {
-                Message = "User created successfully.",
-                Success = true
-            };
+                return new CreateUserResponse
+                {
+                    Message = "User created successfully.",
+                    Success = true
+                };
+            }
+
+            throw new Exception("Failed to create quiz. Please try again later.");
         }
     }
 }
