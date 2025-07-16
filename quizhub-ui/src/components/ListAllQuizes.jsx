@@ -12,12 +12,9 @@ const ListAllQuizzes = ({ quizzes = [] }) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Kad se props quizzes promene, ažuriraj local state
   useEffect(() => {
     setLocalQuizzes(quizzes);
   }, [quizzes]);
-
-  // Nema samostalnog fetch-a više!
 
   return (
     <div className="mt-10 px-4 max-w-7xl mx-auto">

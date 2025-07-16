@@ -33,6 +33,12 @@ const GlobalLeaderboardPage = React.lazy(() =>
 const QuizLeaderboardPage = React.lazy(() =>
   import("./pages/QuizLeaderboardPage")
 );
+const AdminQuizResultsPage = React.lazy(() =>
+  import("./pages/AdminQuizResultsPage")
+);
+const AdminQuizResultsDetailsPage = React.lazy(() =>
+  import("./pages/AdminQuizResultsDetailsPage")
+);
 
 const createAppRoutes = () => (
   <>
@@ -78,6 +84,22 @@ const createAppRoutes = () => (
           <PrivateRoute>
             <QuizLeaderboardPage />
           </PrivateRoute>
+        }
+      />
+      <Route
+        path="quiz-result/admin/:quizId"
+        element={
+          <AdminRoute>
+            <AdminQuizResultsPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="result/details/:quizResultId/admin"
+        element={
+          <AdminRoute>
+            <AdminQuizResultsDetailsPage />
+          </AdminRoute>
         }
       />
       <Route

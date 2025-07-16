@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizHub.Application.Feature.QuizResult.Commands;
+using QuizHub.Application.Feature.QuizResult.Queries.GetQuizResultById;
+using QuizHub.Application.Feature.QuizResult.Queries.GetQuizResultByquizId;
 using QuizHub.Application.Feature.QuizResult.Queries.GetResultWithAllAttempts;
 using QuizHub.Application.Feature.QuizResult.Queries.GetTopResultsForQuiz;
 
@@ -45,6 +47,20 @@ namespace QuizHub.API.Controllers
             };
 
             var result = await Mediator.Send(query, cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet("admin/{quizId}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetQuizResultsAdmin(string quizId,  CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(new GetQuizResultByquizIdQueryRequest(quizId), cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet("admin/details/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetQuizResultDetailsForAdmin(string id)
+        {
+            var result = await Mediator.Send(new GetQuizResultByIdQueryRequest(id));
             return Ok(result);
         }
     }

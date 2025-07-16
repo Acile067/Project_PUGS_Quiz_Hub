@@ -93,6 +93,12 @@ const AdminQuizList = () => {
               >
                 Add Question
               </button>
+              <button
+                className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm"
+                onClick={() => navigate(`/quiz-result/admin/${quiz.id}`)}
+              >
+                See More
+              </button>
             </div>
 
             <div
