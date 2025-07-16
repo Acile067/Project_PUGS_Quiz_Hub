@@ -1,6 +1,6 @@
 import React from "react";
 import UserHero from "./UserHero";
-import QuizSearch from "./QuizSearch";
+import QuizSearch from "./../QuizSearch";
 
 const UserHomeContent = () => {
   return (

@@ -1,191 +1,36 @@
 import React, { useState, useEffect } from "react";
 import {
-  Route,
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout";
-import SecondaryLayout from "./layouts/SecondaryLayout";
 import Spinner from "./components/Spinner";
-import GuestRoute from "./components/GuestRoute";
 import { checkAndCleanToken } from "./services/authService";
-import PrivateRoute from "./components/PrivateRoute";
-import AdminRoute from "./components/AdminRoute";
-import UserRoute from "./components/UserRoute";
+import { mainRoutes } from "./routes/mainRoutes";
+import { secondaryRoutes } from "./routes/secondaryRoutes";
 
-const HomePage = React.lazy(() => import("./pages/HomePage"));
-const RegisterPage = React.lazy(() => import("./pages/RegisterPage"));
-const LoginPage = React.lazy(() => import("./pages/LoginPage"));
-const ProfilePage = React.lazy(() => import("./pages/ProfilePage"));
-const UserDashboardPage = React.lazy(() => import("./pages/UserDashboardPage"));
-const AdminQuizPage = React.lazy(() => import("./pages/AdminQuizPage"));
-const AddQuestionPage = React.lazy(() => import("./pages/AddQuestionPage"));
-const EditQuizPage = React.lazy(() => import("./pages/EditQuizPage"));
-const EditQuizForm = React.lazy(() => import("./components/EditQuizForm"));
-const StartQuizPage = React.lazy(() => import("./pages/StartQuizPage"));
-const ResultsDetailsPage = React.lazy(() =>
-  import("./pages/ResultsDetailsPage")
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      {mainRoutes}
+      {secondaryRoutes}
+    </>
+  )
 );
-const GlobalLeaderboardPage = React.lazy(() =>
-  import("./pages/GlobalLeaderboardPage")
-);
-const QuizLeaderboardPage = React.lazy(() =>
-  import("./pages/QuizLeaderboardPage")
-);
-const AdminQuizResultsPage = React.lazy(() =>
-  import("./pages/AdminQuizResultsPage")
-);
-const AdminQuizResultsDetailsPage = React.lazy(() =>
-  import("./pages/AdminQuizResultsDetailsPage")
-);
-
-const createAppRoutes = () => (
-  <>
-    {/* Rute koje koriste MainLayout */}
-    <Route path="/" element={<MainLayout />}>
-      <Route index element={<HomePage />} />
-
-      <Route
-        path="profile/:id"
-        element={
-          <PrivateRoute>
-            <ProfilePage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="global/leaderboard"
-        element={
-          <PrivateRoute>
-            <GlobalLeaderboardPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/result/details/:id"
-        element={
-          <PrivateRoute>
-            <ResultsDetailsPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="quiz/start/:id"
-        element={
-          <PrivateRoute>
-            <StartQuizPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="quiz/:id/leaderboard"
-        element={
-          <PrivateRoute>
-            <QuizLeaderboardPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="quiz-result/admin/:quizId"
-        element={
-          <AdminRoute>
-            <AdminQuizResultsPage />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="result/details/:quizResultId/admin"
-        element={
-          <AdminRoute>
-            <AdminQuizResultsDetailsPage />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="quiz/add-question/:quizId"
-        element={
-          <AdminRoute>
-            <AddQuestionPage />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="quiz/edit/:quizId"
-        element={
-          <AdminRoute>
-            <EditQuizPage />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="quiz/edit-form/:quizId"
-        element={
-          <AdminRoute>
-            <EditQuizForm />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="quiz/admin"
-        element={
-          <AdminRoute>
-            <AdminQuizPage />
-          </AdminRoute>
-        }
-      />
-      <Route
-        path="user"
-        element={
-          <UserRoute>
-            <UserDashboardPage />
-          </UserRoute>
-        }
-      />
-    </Route>
-
-    {/* Rute koje koriste SecondaryLayout */}
-    <Route path="/" element={<SecondaryLayout />}>
-      <Route
-        path="register"
-        element={
-          <GuestRoute>
-            <RegisterPage />
-          </GuestRoute>
-        }
-      />
-      <Route
-        path="login"
-        element={
-          <GuestRoute>
-            <LoginPage />
-          </GuestRoute>
-        }
-      />
-    </Route>
-  </>
-);
-
-const router = createBrowserRouter(createRoutesFromElements(createAppRoutes()));
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const preloadRoutes = async () => {
-      const routePromises = [import("./pages/HomePage")];
-
-      await Promise.all(routePromises);
+    const preload = async () => {
+      await import("./pages/HomePage");
+      checkAndCleanToken();
       setIsLoading(false);
     };
-
-    checkAndCleanToken();
-    preloadRoutes();
+    preload();
   }, []);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  if (isLoading) return <Spinner />;
 
   return (
     <React.Suspense fallback={<Spinner />}>
