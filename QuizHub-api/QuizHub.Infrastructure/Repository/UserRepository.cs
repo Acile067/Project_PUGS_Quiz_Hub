@@ -29,6 +29,14 @@ namespace QuizHub.Infrastructure.Repository
             return await _context.Users.AnyAsync(u => u.Email == email, cancellationToken);
         }
 
+        public async Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            return await _context.Users
+                .OrderByDescending(u => u.GlobalScore)
+                .Take(10)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken)
         {           
             return await _context.Users

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuizHub.API.Service;
 using QuizHub.Application.Feature.Token.Command;
 using QuizHub.Application.Feature.User.Commands.CreateUser;
+using QuizHub.Application.Feature.User.Quieries.GetUserForGlobalLeaderboard;
 using QuizHub.Application.Feature.User.Quieries.GetUserProfilePicture;
 using QuizHub.Application.Feature.User.Quieries.GetUserResults;
 
@@ -42,6 +43,13 @@ namespace QuizHub.API.Controllers
         public async Task<IActionResult> GetUserResult(string userId, CancellationToken cancellationToken)
         {
             var result = await Mediator.Send(new GetUserResultsQueryRequest(IdentityService.Username), cancellationToken);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("global-leaderboard")]
+        public async Task<IActionResult> GetUserLeaderboard(CancellationToken cancellationToken)
+        {
+            var result = await Mediator.Send(new GetUserForGlobalLeaderboardQueryRequest(), cancellationToken);
             return Ok(result);
         }
     }

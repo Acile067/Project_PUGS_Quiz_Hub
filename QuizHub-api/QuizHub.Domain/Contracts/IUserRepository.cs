@@ -12,6 +12,7 @@ namespace QuizHub.Domain.Contracts
         Task<bool> AddAsync(User user, CancellationToken cancellationToken);
         Task<bool> UpdateAsync(User user, CancellationToken cancellationToken);
         Task<User?> GetByIdAsync(string userId, CancellationToken cancellationToken);
+        Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken);
         Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken);
         Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken);
         Task<User?> GetByEmailOrUsernameAsync(string email, string username, CancellationToken cancellationToken);
