@@ -31,6 +31,16 @@ namespace QuizHub.Infrastructure.Repository
                .ToListAsync(cancellationToken);
         }
 
+        public async Task<IEnumerable<QuizResult>> GetResultsByQuizIdAsync(string quizId, CancellationToken cancellationToken)
+        {
+            return await _context.QuizResults
+                .Where(qr => qr.QuizId == quizId)
+                .OrderByDescending(qr => qr.Score)
+                .ThenBy(qr => qr.TimeElapsedSeconds)
+                .ThenByDescending(qr => qr.CompletedAt)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task<List<QuizResult>> GetResultsByUserIdAsync(string userId, CancellationToken cancellationToken)
         {
             return await _context.QuizResults

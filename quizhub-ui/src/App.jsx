@@ -30,6 +30,9 @@ const ResultsDetailsPage = React.lazy(() =>
 const GlobalLeaderboardPage = React.lazy(() =>
   import("./pages/GlobalLeaderboardPage")
 );
+const QuizLeaderboardPage = React.lazy(() =>
+  import("./pages/QuizLeaderboardPage")
+);
 
 const createAppRoutes = () => (
   <>
@@ -66,6 +69,14 @@ const createAppRoutes = () => (
         element={
           <PrivateRoute>
             <StartQuizPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="quiz/:id/leaderboard"
+        element={
+          <PrivateRoute>
+            <QuizLeaderboardPage />
           </PrivateRoute>
         }
       />

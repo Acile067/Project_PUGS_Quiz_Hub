@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizHub.Application.Feature.QuizResult.Commands;
 using QuizHub.Application.Feature.QuizResult.Queries.GetResultWithAllAttempts;
+using QuizHub.Application.Feature.QuizResult.Queries.GetTopResultsForQuiz;
 
 namespace QuizHub.API.Controllers
 {
@@ -32,6 +33,18 @@ namespace QuizHub.API.Controllers
                 ResultId = resultId
             },cancellationToken);
 
+            return Ok(result);
+        }
+        [HttpGet("top")]
+        public async Task<IActionResult> GetTopResultsForQuiz([FromQuery] string quizId, [FromQuery] string period, CancellationToken cancellationToken)
+        {
+            var query = new GetTopResultsForQuizQueryRequest
+            {
+                QuizId = quizId,
+                Period = period
+            };
+
+            var result = await Mediator.Send(query, cancellationToken);
             return Ok(result);
         }
     }

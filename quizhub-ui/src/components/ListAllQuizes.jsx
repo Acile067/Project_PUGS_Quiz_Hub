@@ -49,12 +49,18 @@ const ListAllQuizzes = ({ quizzes = [] }) => {
               </p>
             </div>
 
-            <div className="flex justify-center px-4 pb-4">
+            <div className="flex justify-center gap-3 px-4 pb-4">
               <button
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
                 onClick={() => navigate(`/quiz/start/${quiz.id}`)}
               >
                 Start Quiz
+              </button>
+              <button
+                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-sm"
+                onClick={() => navigate(`/quiz/${quiz.id}/leaderboard`)}
+              >
+                Leaderboard
               </button>
             </div>
 

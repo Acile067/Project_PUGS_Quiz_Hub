@@ -11,7 +11,10 @@ export const UserProfile = ({ userId }) => {
     const fetchResults = async () => {
       try {
         const res = await getUserResults(userId);
-        setResults(res.results);
+        const sorted = res.results.sort(
+          (a, b) => new Date(b.completedAt) - new Date(a.completedAt)
+        );
+        setResults(sorted);
       } catch (err) {
         setError(err.message);
       }

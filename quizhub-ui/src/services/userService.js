@@ -55,20 +55,3 @@ export const getUserResults = async (userId) => {
 
   return await response.json();
 };
-
-export const getResultDetails = async (resultId) => {
-  const token = localStorage.getItem("access_token");
-
-  const res = await fetch(`${API_URL}/quiz-result/details/${resultId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!res.ok) {
-    const data = await res.json();
-    throw new Error(data.message || "Failed to fetch result details");
-  }
-
-  return await res.json();
-};
