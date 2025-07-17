@@ -29,11 +29,11 @@ const QuestionItem = ({ question, index }) => {
             {options.map((opt, i) => (
               <li key={i}>
                 {opt}{" "}
-                {type === "SingleChoice" && correctOptionIndex === i && (
+                {type === "SingleChoice" && correctOptionIndex === i + 1 && (
                   <strong>(correct)</strong>
                 )}
                 {type === "MultipleChoice" &&
-                  correctOptionIndices.includes(i) && (
+                  correctOptionIndices.includes(i + 1) && (
                     <strong>(correct)</strong>
                   )}
               </li>

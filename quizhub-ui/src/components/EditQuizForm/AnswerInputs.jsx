@@ -15,18 +15,18 @@ const AnswerInputs = ({ question, updateOption, updateQuestion }) => {
             {question.type === "SingleChoice" ? (
               <input
                 type="radio"
-                checked={question.correctOptionIndex === i}
-                onChange={() => updateQuestion({ correctOptionIndex: i })}
+                checked={question.correctOptionIndex === i + 1}
+                onChange={() => updateQuestion({ correctOptionIndex: i + 1 })}
               />
             ) : (
               <input
                 type="checkbox"
-                checked={question.correctOptionIndices?.includes(i)}
+                checked={question.correctOptionIndices?.includes(i + 1)}
                 onChange={(e) => {
                   const current = question.correctOptionIndices || [];
                   const updated = e.target.checked
-                    ? [...current, i]
-                    : current.filter((val) => val !== i);
+                    ? [...current, i + 1]
+                    : current.filter((val) => val !== i + 1);
                   updateQuestion({ correctOptionIndices: updated });
                 }}
               />

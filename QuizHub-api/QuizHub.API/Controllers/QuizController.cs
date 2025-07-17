@@ -26,8 +26,8 @@ namespace QuizHub.API.Controllers
             var command = new CreateQuizCommandRequest(
                 userId,
                 dto.Title,
-                dto.Description,
                 dto.Category,
+                dto.Description,
                 dto.TimeLimitSeconds,
                 dto.Difficulty
             );
