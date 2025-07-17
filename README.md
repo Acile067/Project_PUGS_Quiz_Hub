@@ -82,3 +82,7 @@ The goal of this project is to develop a modern web application that allows user
    ```
     
     The application will run on port **3000**.
+
+## Use Case Diagram:
+
+![UseCase!](/UML_Use_Case_Diagram.png)
