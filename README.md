@@ -1,5 +1,8 @@
 # Application of Web Programming in Infrastructure Systems
 The goal of this project is to develop a modern web application that allows users to take quizzes in various subjects, receive real-time results, and compare their knowledge with others through a global leaderboard. The application should be modular, extensible, and implemented according to contemporary frontend and backend development standards.
+
+---
+
 ![Hero!](/screenshots/Hero.png)
 
 ## Built using 
