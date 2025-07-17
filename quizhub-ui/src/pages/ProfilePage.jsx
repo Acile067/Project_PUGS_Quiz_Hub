@@ -1,5 +1,5 @@
 import React from "react";
-import { UserProfile } from "../components/UserProfile";
+import UserProfile from "../components/UserProfile/UserProfile";
 import { useParams } from "react-router-dom";
 
 const ProfilePage = () => {

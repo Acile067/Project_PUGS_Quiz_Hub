@@ -30,7 +30,7 @@ const AdminQuizResultsDetails = ({ quizResultId }) => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const result = await getAdminResultDetails(quizResultId); // poziv novog servisa
+        const result = await getAdminResultDetails(quizResultId);
         setData(result);
       } catch (err) {
         setError(err.message || "Failed to load result");

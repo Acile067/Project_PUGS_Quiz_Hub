@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { isAuthenticated } from "../services/authService";
+import { isAuthenticated } from "../../services/authService";
 
 const GuestRoute = ({ children }) => {
   if (isAuthenticated()) {

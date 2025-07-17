@@ -94,5 +94,11 @@ namespace QuizHub.Infrastructure.Repository
 
             return await query.ToListAsync(cancellationToken);
         }
+
+        public async Task<Quiz?> GetQuizByTitleAsync(string title, CancellationToken cancellationToken)
+        {
+            return await _context.Quizzes
+                .FirstOrDefaultAsync(q => q.Title == title, cancellationToken);
+        }
     }
 }

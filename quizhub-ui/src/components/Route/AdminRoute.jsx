@@ -1,5 +1,8 @@
 import React from "react";
-import { isAuthenticated, getUserRoleFromToken } from "../services/authService";
+import {
+  isAuthenticated,
+  getUserRoleFromToken,
+} from "../../services/authService";
 
 const AdminRoute = ({ children }) => {
   if (!isAuthenticated() || getUserRoleFromToken() !== "Admin") {

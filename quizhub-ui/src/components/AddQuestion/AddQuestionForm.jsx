@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { createQuestion } from "../services/questionService";
-import { createQuestionRequest } from "../models/questionModel";
-import { createFieldErrorObject } from "../models/fieldErrorModel";
+import { useNavigate } from "react-router-dom";
+import { createQuestion } from "../../services/questionService";
+import { createQuestionRequest } from "../../models/questionModel";
+import { createFieldErrorObject } from "../../models/fieldErrorModel";
+import OptionInputs from "./OptionInputs";
 
-const AddQuestion = ({ quizId }) => {
+const AddQuestionForm = ({ quizId }) => {
   const [text, setText] = useState("");
   const [type, setType] = useState("SingleChoice");
   const [options, setOptions] = useState(["", "", "", ""]);
   const [correctOptionIndex, setCorrectOptionIndex] = useState(0);
-  const [correctOptionIndices, setCorrectOptionIndices] = useState([]);
+  const [correctOptionIndicesInput, setCorrectOptionIndicesInput] =
+    useState("");
   const [correctAnswerBool, setCorrectAnswerBool] = useState(true);
   const [correctAnswerText, setCorrectAnswerText] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
-  const [correctOptionIndicesInput, setCorrectOptionIndicesInput] =
-    useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,7 +25,7 @@ const AddQuestion = ({ quizId }) => {
       .split(",")
       .map((v) => v.trim())
       .filter((v) => v !== "" && !isNaN(v))
-      .map((v) => parseInt(v, 10));
+      .map(Number);
 
     const questionRequest = createQuestionRequest({
       quizId,
@@ -43,46 +43,18 @@ const AddQuestion = ({ quizId }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        if (data.errors && Array.isArray(data.errors)) {
-          setFieldErrors(createFieldErrorObject(data.errors));
-        } else {
-          setFieldErrors({
-            general: data.detail || "Failed to create question.",
-          });
-        }
+        setFieldErrors(
+          data.errors && Array.isArray(data.errors)
+            ? createFieldErrorObject(data.errors)
+            : { general: data.detail || "Failed to create question." }
+        );
         return;
       }
 
-      navigate("/");
+      navigate(`/quiz/edit/${quizId}`);
     } catch (err) {
       setFieldErrors({ general: "Unexpected error: " + err.message });
     }
-  };
-
-  const renderOptionsInput = () => {
-    return (
-      <>
-        {options.map((opt, idx) => (
-          <input
-            key={idx}
-            type="text"
-            placeholder={`Option ${idx + 1}`}
-            value={opt}
-            onChange={(e) => {
-              const newOptions = [...options];
-              newOptions[idx] = e.target.value;
-              setOptions(newOptions);
-            }}
-            className={`w-full px-2 py-1 mb-2 border rounded ${
-              fieldErrors.Options ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-        ))}
-        {fieldErrors.Options && (
-          <p className="text-red-500 text-sm mb-2">{fieldErrors.Options}</p>
-        )}
-      </>
-    );
   };
 
   return (
@@ -118,7 +90,11 @@ const AddQuestion = ({ quizId }) => {
         {["SingleChoice", "MultipleChoice"].includes(type) && (
           <>
             <label className="block mb-2 font-semibold">Options</label>
-            {renderOptionsInput()}
+            <OptionInputs
+              options={options}
+              setOptions={setOptions}
+              fieldErrors={fieldErrors}
+            />
           </>
         )}
 
@@ -227,4 +203,4 @@ const AddQuestion = ({ quizId }) => {
   );
 };
 
-export default AddQuestion;
+export default AddQuestionForm;

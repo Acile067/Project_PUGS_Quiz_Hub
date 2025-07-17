@@ -1,5 +1,5 @@
 import React from "react";
-import QuizLeaderboard from "../components/QuizLeaderboard";
+import QuizLeaderboard from "../components/QuizLeaderboard/index";
 import { useParams } from "react-router-dom";
 
 const QuizLeaderboardPage = () => {

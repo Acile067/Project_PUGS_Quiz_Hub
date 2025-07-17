@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import AddQuestion from "../components/AddQuestion";
+import AddQuestion from "../components/AddQuestion/index";
 
 const AddQuestionPage = () => {
   const { quizId } = useParams();

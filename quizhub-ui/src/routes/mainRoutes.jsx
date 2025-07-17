@@ -1,8 +1,8 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import PrivateRoute from "../components/PrivateRoute";
-import AdminRoute from "../components/AdminRoute";
+import PrivateRoute from "../components/Route/PrivateRoute";
+import AdminRoute from "../components/Route/AdminRoute";
 
 const HomePage = React.lazy(() => import("../pages/HomePage"));
 const ProfilePage = React.lazy(() => import("../pages/ProfilePage"));
@@ -24,7 +24,9 @@ const AdminQuizResultsDetailsPage = React.lazy(() =>
 );
 const AddQuestionPage = React.lazy(() => import("../pages/AddQuestionPage"));
 const EditQuizPage = React.lazy(() => import("../pages/EditQuizPage"));
-const EditQuizForm = React.lazy(() => import("../components/EditQuizForm"));
+const EditQuizForm = React.lazy(() =>
+  import("../components/EditQuizForm/EditQuizForm")
+);
 const AdminQuizPage = React.lazy(() => import("../pages/AdminQuizPage"));
 
 export const mainRoutes = (

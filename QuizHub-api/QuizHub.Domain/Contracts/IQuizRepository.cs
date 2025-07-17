@@ -13,6 +13,7 @@ namespace QuizHub.Domain.Contracts
         Task<bool> UpdateQuizAsync(Quiz quiz, CancellationToken cancellationToken);
         Task<bool> DeleteQuizAsync(string quizId, CancellationToken cancellationToken);
         Task<Quiz?> GetQuizByIdAsync(string quizId, CancellationToken cancellationToken);
+        Task<Quiz?> GetQuizByTitleAsync(string title, CancellationToken cancellationToken);
         Task<IEnumerable<Quiz>> GetAllQuizzesByCreatedByIdAsync(string createdById, CancellationToken cancellationToken);
         Task<IEnumerable<Quiz>> GetAllQuizzesAsync(CancellationToken cancellationToken);
         Task<List<string>> GetAllCategoriesAsync(CancellationToken cancellationToken);
