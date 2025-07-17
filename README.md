@@ -32,6 +32,20 @@ The goal of this project is to develop a modern web application that allows user
    node -v
    npm -v
    ```
+   
+ 4. **Install Entity Framework Core CLI tools**
+
+    Make sure you have the EF Core CLI tools installed globally so you can run database migrations:
+    
+    ```bash
+    dotnet tool install --global dotnet-ef
+    ```
+
+    Verify the installation by running the following commands in your terminal:
+    
+    ```bash
+    dotnet ef
+    ```
 
 ## How to run:
 
@@ -44,12 +58,18 @@ The goal of this project is to develop a modern web application that allows user
 2. **Dotnet CLI API**:
    
     ```bash
-   cd QuizHub-api/QuizHub.API
-   dotnet run
+   cd QuizHub-api/QuizHub.Infrastructure
+   dotnet ef database update
    ```
+    This applies all pending Entity Framework Core migrations to the database.
+    Then, start the API:
+    ```bash
+    cd ../QuizHub.API
+    dotnet run
+    ```
     The application will run on port **7108**.
 
-3. **Run UI**:
+4. **Run UI**:
    
     ```bash
    cd quizhub-ui
